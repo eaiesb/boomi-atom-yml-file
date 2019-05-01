@@ -1,0 +1,109 @@
+apiVersion: v1
+kind: Template
+metadata:
+  creationTimestamp: null
+  name: ATOM_NAME
+  labels:
+    app: ATOM_NAME  
+objects:
+   
+
+- apiVersion: v1
+  kind: "DeploymentConfig"
+  metadata:
+    name: "ATOM_NAME"
+    labels:
+      app: ATOM_NAME       
+  spec:
+    template: 
+      metadata:
+        labels:
+          name: "ATOM_NAME"
+      spec:
+        containers:
+          - name: "ATOM_NAME"
+            env:
+              - name: URL
+                value: "platform.boomi.com"
+              - name: BOOMI_USERNAME
+                value: "admin@eaiesb.com"
+              - name: BOOMI_PASSWORD
+                value: "Eaiesb2019"
+              - name: BOOMI_ACCOUNTID
+                value: "trainingadmineaiesb-QPLXEW"
+              - name: INSTALLATION_DIRECTORY
+                value: /var
+              - name: ENV_NAME
+                value: "ENVIRONMENT"
+              - name: TZ
+                value: "Asia/Kolkata"
+            ports:
+              - containerPort: 9090 
+                protocol: TCP
+                            		
+    replicas: 3 
+    triggers:
+      - type: "ConfigChange" 
+      - type: "ImageChange" 
+        imageChangeParams:
+          automatic: true
+          containerNames:
+            - "ATOM_NAME"
+          from:
+            kind: "ImageStreamTag"
+            name: "boomi-atom:IMAGE_PROPERTIES"
+          lastTriggeredImage: >-
+            docker-registry-default.eaiesb.com/boomi-atom/boomi-atom:IMAGE_PROPERTIES           
+    strategy: 
+      type: "Rolling"
+    paused: false 
+    revisionHistoryLimit: 2 
+  minReadySeconds: 0 
+
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ATOM_NAME
+    labels:
+      app: ATOM_NAME         
+  spec:
+    ports:      
+      - name: 9090-tcp
+        port: 9090
+        protocol: TCP
+        targetPort: 9090
+    selector:
+      deploymentconfig: ATOM_NAME
+    sessionAffinity: None
+    type: NodePort
+  status:
+    loadBalancer: {}
+    
+- apiVersion: v1
+  kind: Route
+  metadata:
+    name: ATOM_NAME
+  spec:
+    host: ROUTE_NAME
+    path: 
+    port:
+      targetPort: 9090-tcp
+    tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge      
+    to:
+      kind: Service
+      name: ATOM_NAME
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+      - conditions:
+          - lastTransitionTime: '2018-05-03T17:57:00Z'
+            status: 'True'
+            type: Admitted
+        host:
+        routerName: router
+        wildcardPolicy: None    
+        
+    
