@@ -41,7 +41,7 @@ objects:
               - containerPort: 9090 
                 protocol: TCP
                             		
-    replicas: 3 
+    replicas: 1 
     triggers:
       - type: "ConfigChange" 
       - type: "ImageChange" 
