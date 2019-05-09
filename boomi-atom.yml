@@ -53,7 +53,7 @@ objects:
             kind: "ImageStreamTag"
             name: "boomi-atom:IMAGE_PROPERTIES"
           lastTriggeredImage: >-
-            docker-registry-default.eaiesb.com/boomi-atom/boomi-atom:IMAGE_PROPERTIES           
+            docker-registry-default.eaiesb.com/boomi-atom-sample/boomi-atom:IMAGE_PROPERTIES           
     strategy: 
       type: "Rolling"
     paused: false 
